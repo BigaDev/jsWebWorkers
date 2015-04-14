@@ -4,10 +4,10 @@
 </head>
 <body>
     <img id="img" src="public/images/sisi.jpg"><canvas id="filters" style="display: none;"></canvas>
-    <button onclick="grayscale()">Grayscale the image</button>
+    <button onclick="runFilters()">Grayscale the image</button>
 	<script type="text/javascript">
 		var filters = new Filters(document.getElementById('img'));
-		function grayscale () {
+		function runFilters () {
 		  	filters.runFilter("filters");
 		}  
 	</script>
