@@ -3,12 +3,17 @@
 	<script type="text/javascript" src="public/js/filters.js"></script>
 </head>
 <body>
-    <img id="img" src="public/images/sisi.jpg"><canvas id="filters" style="display: none;"></canvas>
-    <button onclick="runFilters()">Grayscale the image</button>
+    <img id="img" src="public/images/sisi.jpg">
+    <canvas id="grayScale" style="display: none;"></canvas>
+    <canvas id="brightness" style="display: none;"></canvas>
+    <canvas id="threshold" style="display: none;"></canvas>
+    <canvas id="vibrance" style="display: none;"></canvas>
+ 
+    <button onclick="runFilters()">Run filters</button>
 	<script type="text/javascript">
 		var filters = new Filters(document.getElementById('img'));
 		function runFilters () {
-		  	filters.runFilter("filters");
+		  	filters.runFilters();
 		}  
 	</script>
 </body>
