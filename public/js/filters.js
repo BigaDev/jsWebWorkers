@@ -63,11 +63,63 @@ Filters.vibrance = function(pixels, adjustment) {
 };
 
 Filters.prototype.runFilters = function() {
-	var args = [Filters.getPixels(img)];
-  
-  var data = Filters.grayScale.apply(null, args);
-  Filters.drawImage("grayScale", data);
+  var d1 = new Date();
+  var grayScaleWorker = new Worker('/public/js/grayScale.js');
+  var brightnessWorker = new Worker('/public/js/brightness.js');
+  var thresholdWorker = new Worker('/public/js/threshold.js');
+  var vibranceWorker = new Worker('/public/js/vibrance.js');
+
+  var args = [Filters.getPixels(img)];
+  grayScaleWorker.postMessage({
+    args : args
+  });
   args.pop();
+  grayScaleWorker.onmessage = function(e) {
+    Filters.drawImage("grayScale", e.data);
+  }
+
+  args.push(Filters.getPixels(img));
+  args.push(75);
+  brightnessWorker.postMessage({
+    args : args
+  });
+  args.pop();
+  args.pop();
+  brightnessWorker.onmessage = function(e) {
+    Filters.drawImage("brightness", e.data);
+  }
+
+  args.push(Filters.getPixels(img));
+  args.push(100);
+  thresholdWorker.postMessage({
+    args : args
+  });
+  args.pop();
+  args.pop();
+  thresholdWorker.onmessage = function(e) {
+    Filters.drawImage("threshold", e.data);
+  }
+
+  args.push(Filters.getPixels(img));
+  args.push(50);
+  vibranceWorker.postMessage({
+    args : args
+  });
+  args.pop();
+  args.pop();
+  vibranceWorker.onmessage = function(e) {
+    Filters.drawImage("vibrance", e.data);
+  }
+
+  var d2 = new Date();
+  alert((d2 - d1) / 1000);
+  
+	
+  
+  /*var data = Filters.grayScale.apply(null, args);
+  Filters.drawImage("grayScale", data);
+    args.pop();
+
 
   args.push(Filters.getPixels(img));
   args.push(75);
@@ -88,7 +140,8 @@ Filters.prototype.runFilters = function() {
   data = Filters.vibrance.apply(null, args);
   Filters.drawImage("vibrance", data);
   args.pop();
-  args.pop();
+  args.pop();*/
+  
 }
 
 Filters.drawImage = function(id, data) {
