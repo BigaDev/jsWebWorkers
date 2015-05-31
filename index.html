@@ -3,18 +3,31 @@
 	<script type="text/javascript" src="public/js/filters.js"></script>
 </head>
 <body>
-    <img id="img" src="public/images/sisi.jpg">
+    <img id="img" src="public/images/s.jpg">
     <canvas id="grayScale" style="display: none;"></canvas>
     <canvas id="brightness" style="display: none;"></canvas>
     <canvas id="threshold" style="display: none;"></canvas>
     <canvas id="vibrance" style="display: none;"></canvas>
  
-    <button onclick="runFilters()">Run filters</button>
+    <button onclick="runFiltersSeq()">Run filters Sequntial</button>
+    <button onclick="runFiltersPar()">Run filters Parallel</button>
 	<script type="text/javascript">
+		var worker = new Worker('/public/js/worker.js');
+		console.log(1);
+		worker.postMessage({
+    		args : 2
+  		});
+  		worker.onmessage = function(e) {
+    		console.log(e.data)
+  		}
+		console.log(3);
 		var filters = new Filters(document.getElementById('img'));
-		function runFilters () {
-		  	filters.runFilters();
-		}  
+		function runFiltersSeq() {
+		  	filters.runFiltersSeq();
+		} 
+		function runFiltersPar() {
+		  	filters.runFiltersPar();
+		} 
 	</script>
 </body>
 </html>
